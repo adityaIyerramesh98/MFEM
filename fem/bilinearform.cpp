@@ -980,6 +980,7 @@ void BilinearForm::EliminateVDofs(const Array<int> &vdofs,
       mat_e = new SparseMatrix(height);
    }
 
+   vdofs.HostRead();
    for (int i = 0; i < vdofs.Size(); i++)
    {
       int vdof = vdofs[i];

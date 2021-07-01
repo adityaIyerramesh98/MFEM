@@ -693,12 +693,12 @@ void SparseMatrix::AddMult(const Vector &x, Vector &y, const double a) const
       cusparseSpMV_bufferSize(handle, CUSPARSE_OPERATION_NON_TRANSPOSE, &alpha,
                               matA_descr,
                               vecX_descr, &beta, vecY_descr, CUDA_R_64F,
-                              CUSPARSE_SPMV_CSR_ALG1, &newBufferSize);
+                              CUSPARSE_SPMV_CSR_ALG2, &newBufferSize);
 #elif CUDA_VERSION >= 10010
       cusparseSpMV_bufferSize(handle, CUSPARSE_OPERATION_NON_TRANSPOSE, &alpha,
                               matA_descr,
                               vecX_descr, &beta, vecY_descr, CUDA_R_64F,
-                              CUSPARSE_CSRMV_ALG1, &newBufferSize);
+                              CUSPARSE_SPMV_CSR_ALG2, &newBufferSize);
 #endif
 
       // Check if we need to resize
@@ -724,7 +724,7 @@ void SparseMatrix::AddMult(const Vector &x, Vector &y, const double a) const
 
       // Y = alpha A * X + beta * Y
       cusparseSpMV(handle, CUSPARSE_OPERATION_NON_TRANSPOSE, &alpha, matA_descr,
-                   vecX_descr, &beta, vecY_descr, CUDA_R_64F, CUSPARSE_CSRMV_ALG1, dBuffer);
+                   vecX_descr, &beta, vecY_descr, CUDA_R_64F, CUSPARSE_SPMV_CSR_ALG2, dBuffer);
 #else
       cusparseDcsrmv(handle, CUSPARSE_OPERATION_NON_TRANSPOSE,
                      Height(), Width(), J.Capacity(),
